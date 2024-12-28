@@ -5,10 +5,18 @@ const users = require("./MOCK_DATA.json");
 
 //routes
 
-app.get("/users", (req, res) => {
-  res.json(users);
-});
 
+app.get("/api/users", (req, res) => {
+    res.json(users);
+  });
+
+app.get("/users",(req,res)=>{
+    const html=`
+    <ul> ${users.map((users)=>`<li>${users.first_name}</li>`).join("")}  </ul>
+    `
+    res.send(html)
+})
+  
 app.listen(port, () => {
   console.log(`Running on port ${port}`);
 });
