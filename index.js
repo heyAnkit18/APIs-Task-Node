@@ -34,6 +34,32 @@ app.post("/api/users", (req, res) => {
   
 });
 
+//edit user with id 
+app.patch("/api/users/:id", (req, res) => {
+  const id = Number(req.params.id); // Get the user ID from the URL
+  const updates = req.body; // Get the updates from the request body
+
+  // Find the user by ID
+  const user = users.find(user => user.id === id);
+
+  if (!user) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  // Update the user with the new data
+  Object.assign(user, updates);
+
+  // Write updated data back to the file
+  fs.writeFile("./MOCK_DATA.json", JSON.stringify(users), (err) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to update user" });
+    }
+
+    res.json({ status: "success", user });
+  });
+});
+
+
 //Display first name with html page render
 app.get("/users", (req, res) => {
   const html = `
