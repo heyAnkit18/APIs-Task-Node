@@ -59,6 +59,30 @@ app.patch("/api/users/:id", (req, res) => {
   });
 });
 
+//Delete the user with id
+app.delete("/api/users/:id", (req, res) => {
+  const id = Number(req.params.id); // Get the user ID from the URL
+
+  // Find the index of the user by ID
+  const userIndex = users.findIndex(user => user.id === id);
+
+  if (userIndex === -1) {
+    return res.status(404).json({ error: "User not found" });
+  }
+
+  // Remove the user from the array
+  const deletedUser = users.splice(userIndex, 1)[0];
+
+  // Write updated data back to the file
+  fs.writeFile("./MOCK_DATA.json", JSON.stringify(users, null, 2), (err) => {
+    if (err) {
+      return res.status(500).json({ error: "Failed to delete user" });
+    }
+
+    res.json({ status: "success", user: deletedUser });
+  });
+});
+
 
 //Display first name with html page render
 app.get("/users", (req, res) => {
