@@ -6,7 +6,6 @@ const bodyParser = require('body-parser');
 const users = require("./MOCK_DATA.json");
 
 
-
 app.use(bodyParser.json()); // Middleware to parse JSON body
 
 
